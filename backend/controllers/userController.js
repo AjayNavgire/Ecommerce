@@ -27,6 +27,7 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
 exports.loginUser = catchAsyncError(async (req, res, next) => {
     const { email, password } = req.body;
 
+
     // Checking if user has given password and email both
 
     if (!email || !password) {
@@ -169,3 +170,88 @@ exports.updatePassword = catchAsyncError(async(req, res, next) =>{
 
   sendToken(user, 200, res)
 })
+
+// Update User Profile
+exports.updateProfile = catchAsyncError(async(req, res, next) => {
+    const newUserData = {
+        name: req.body.name,
+        email: req.body.email
+    };
+
+    // We will add cloudinary later
+
+    const user = await User.findByIdAndUpdate(req.user.id, newUserData,{
+        new: true,
+        runValidators: true,
+        useFindAndModify: false,
+    });
+
+    res.status(200).json({
+        success: true,
+    })
+})
+
+// Get all users (admin)
+exports.getAllUser = catchAsyncError(async(req, res, next) =>{
+    const users = await User.find();
+
+    res.status(200).json({
+        success: true,
+        users
+    })
+})
+
+// Get single user (admin)
+exports.getSingleUser = catchAsyncError(async(req, res, next) =>{
+    const user = await User.findById(req.params.id);
+
+    if(!user){
+        return next (new ErrorHandler(`User does not exist with id: ${req.params.id}`))
+    }
+
+    res.status(200).json({
+        success: true,
+        user
+    })
+})
+
+// Update User Role -- Admin
+exports.updateUserRole = catchAsyncError(async(req, res, next) => {
+    const newUserData = {
+        name: req.body.name,
+        email: req.body.email,
+        role: req.body.role
+    };
+
+    // We will add cloudinary later
+
+    const user = await User.findByIdAndUpdate(req.params.id, newUserData,{
+        new: true,
+        runValidators: true,
+        useFindAndModify: false,
+    });
+
+    res.status(200).json({
+        success: true,
+    })
+})
+
+// Delete User 
+exports.deleteUser = catchAsyncError(async(req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  if(!user){
+      return next(
+          new ErrorHandler(`User does not exist with Id: ${req.params.id}`)
+      )
+  }
+
+  await user.remove()
+
+    res.status(200).json({
+        success: true,
+        message: "User Deleted Successfully"
+    })
+})
+
+// 

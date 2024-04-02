@@ -1,5 +1,5 @@
 const mongooes = require("mongoose");
-let  DB_URI = process.env.DB_URI || "mongodb://localhost:27017/Ecommerce" 
+let  DB_URI = process.env.DB_URI || "mongodb+srv://ajaynawgire1:GCOzvACNdt1LeF3L@cluster0.6egmb0e.mongodb.net/" 
 const connectDatabase = () => {
   
     mongooes

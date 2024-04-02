@@ -28,6 +28,10 @@ app.use("/api/v1", task);
 // Middleware for Errors
 app.use(errorMiddleware)
 
+app.get('/', (req, res)=>{
+    res.send("Server is working")
+})
+
 
 module.exports = app;
 

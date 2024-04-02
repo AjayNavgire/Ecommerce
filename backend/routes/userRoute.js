@@ -1,6 +1,7 @@
 const express = require("express");
 const { 
     registerUser, 
+    verify,
     loginUser, 
     logout, 
     forgotPassword, 
@@ -19,6 +20,8 @@ const {isAuthenticatedUser, authorizedRoles} = require("../middleware/auth")
 const router = express.Router();
 
 router.route("/register").post(registerUser);
+
+router.route('/verify').post(isAuthenticatedUser, verify);
 
 router.route("/login").post(loginUser);
 

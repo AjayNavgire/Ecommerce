@@ -38,6 +38,28 @@ const userSchema = new mongoose.Schema({
         default: "user"
     },
 
+    createdAt: {
+        type: Date,
+        default: Date.now()
+    },
+
+    tasks : [
+        {
+            title: String,
+            description : String,
+            completed: Boolean,
+            createdAt: Date,
+        }
+    ],
+
+    verified: {
+        type: Boolean,
+        default: false
+    },
+
+    otp: Number,
+    otp_expiry: Date,
+    resetPasswoedOtp: Number,
     resetPasswordToken: String,
     resetPasswordExpire: Date
 });
@@ -80,8 +102,11 @@ userSchema.methods.getResetPasswordToken = function () {
     this.resetPasswordExpire = Date.now() + 15*60*1000;
 
     return resetToken;
-}
+};
 
 
+userSchema.index({ otp_expiry: 1 }, { expireAfterSeconds: 0 });
+
+ 
 
 module.exports = mongoose.model("user", userSchema)

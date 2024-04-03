@@ -25,12 +25,14 @@ app.use("/api/v1", product);
 app.use("/api/v1", user);
 app.use("/api/v1", task);
 
-// Middleware for Errors
-app.use(errorMiddleware)
-
 app.get('/', (req, res)=>{
     res.send("Server is working")
 })
+
+// Middleware for Errors
+app.use(errorMiddleware)
+
+
 
 
 module.exports = app;
